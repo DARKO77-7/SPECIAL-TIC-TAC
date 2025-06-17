@@ -1,206 +1,1235 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Cybersecurity Awareness</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<title>Tic Tac Toe + More Games with Persistent IP Collector</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; }
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
   body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #0d0d0d;
-    color: #eee;
+    background: linear-gradient(135deg, #4f46e5, #22d3ee);
+    color: #f0f0f5;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    line-height: 1.6;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 48px;
   }
-  a { color: #ff4c4c; text-decoration: none; transition: color 0.3s ease; }
-  a:hover, a:focus { color: #ff6969; outline: none; }
-  header {
-    padding: 40px 24px 24px;
-    text-align: center;
-    user-select: none;
-  }
-  header h1 {
-    font-weight: 700;
-    font-size: 2.8rem;
-    color: #ff4c4c;
-    margin: 0;
-    text-shadow: 0 0 8px #ff3b3b;
-  }
-  main {
-    flex: 1 0 auto;
-    max-width: 960px;
-    margin: 24px auto 80px;
-    padding: 0 24px;
-    display: block;
-  }
-  .neon-box {
-    background-color: #1e1e1e;
+
+  /* Glassmorphism container */
+  .app-container {
+    background: rgba(255 255 255 / 0.1);
+    backdrop-filter: blur(15px);
     border-radius: 16px;
-    border: 3px solid #ff4c4c;
-    padding: 30px 28px;
-    margin-bottom: 48px;
-    box-shadow: 0 0 12px rgba(255, 76, 76, 0.75),
-                inset 0 0 16px rgba(255, 76, 76, 0.5);
-    color: #f5f5f5;
-    font-weight: 400;
-    font-size: 1.15rem;
-    line-height: 1.7;
-    cursor: default;
-    transition: box-shadow 0.4s ease, transform 0.3s ease;
-    user-select: text;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    padding: 24px;
+    max-width: 480px;
+    width: 90vw;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
   }
-  .neon-box h2, .neon-box h3 {
-    margin-top: 0;
-    color: #ff4c4c;
-    text-shadow: 0 0 12px #ff4c4c;
-  }
-  .neon-box:hover,
-  .neon-box:focus-within {
-    box-shadow: 0 0 28px #ff4c4c, inset 0 0 28px #ff4c4c;
-    transform: translateY(-10px) scale(1.05);
-    outline: none;
-  }
-  section.info-section {
-    margin-bottom: 48px;
-  }
-  section.info-section h2,
-  section.info-section h3 {
-    color: #ff4c4c;
-    text-shadow: 0 0 8px #ff3b3b;
-    margin-top: 0;
+
+  header {
+    font-size: 1.8rem;
     font-weight: 700;
-  }
-  section.info-section p,
-  section.info-section ul {
-    font-weight: 400;
-    font-size: 1.05rem;
-    margin-top: 8px;
-    color: #ddd;
-  }
-  section.info-section ul {
-    padding-left: 20px;
-    list-style-type: disc;
-  }
-  section.info-section ul li {
-    margin-bottom: 10px;
-  }
-  #freeCoinsBtn {
-    display: block;
-    margin: 40px auto 80px;
-    background: #ff4c4c;
-    color: #1a1a1a;
-    font-weight: 700;
-    font-size: 1.2rem;
-    padding: 14px 36px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    box-shadow: 0 0 15px #ff4c4c;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    color: #dde4ff;
     user-select: none;
+    margin-bottom: 24px;
     text-align: center;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 6px #93c5fd;
   }
-  #freeCoinsBtn:hover, #freeCoinsBtn:focus {
-    background: #ff1a1a;
-    box-shadow: 0 0 25px #ff1a1a;
+
+  /* Status text */
+  .status {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    color: #cbd5e1;
+    min-height: 1.5rem;
+  }
+
+  /* Reset button */
+  .btn-reset {
+    background: linear-gradient(135deg, #4f46e5, #22d3ee);
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 32px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease, box-shadow 0.3s ease;
+    align-self: center;
+    margin-top: 12px;
+  }
+  .btn-reset:hover, .btn-reset:focus {
+    transform: scale(1.05);
+    box-shadow: 0 8px 28px rgba(34,211,238,0.7);
     outline: none;
-    transform: scale(1.08);
   }
-  #jumpScareOverlay {
+
+  /* Small fixed bar bottom right */
+  .ip-bar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right:0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.95);
+    bottom: 16px;
+    right: 16px;
+    background: rgba(255 255 255 / 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 48px;
+    box-shadow: 0 0 20px rgba(34,211,238,0.7);
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+  }
+  .ip-bar:hover {
+    background: rgba(255 255 255 / 0.3);
+  }
+  .ip-bar .material-icons {
+    font-size: 28px;
+    color: #22d3ee;
+  }
+  .ip-bar span {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #22d3ee;
+    font-size: 1rem;
+    user-select: none;
+  }
+
+  /* Modal shared overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(31, 38, 135, 0.6);
+    backdrop-filter: blur(8px);
     display: none;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    color: #ff0000;
-    font-weight: 900;
-    font-size: 3.8rem;
-    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
-    z-index: 9999;
-    user-select: none;
+    z-index: 2000;
+    padding: 16px;
   }
-  #jumpScareOverlay.show {
+  .modal-overlay.show {
     display: flex;
   }
-  #jumpScareOverlay small {
-    font-weight: 400;
-    font-size: 1.2rem;
-    color: #ff5555;
-    margin-top: 16px;
-    text-shadow: none;
+
+  /* Modal content */
+  .modal {
+    background: rgba(255 255 255 / 0.12);
+    backdrop-filter: blur(18px);
+    border-radius: 16px;
+    padding: 24px 32px;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    color: #eef2ff;
+    font-weight: 600;
+    user-select: text;
+    position: relative;
   }
-  #jumpScareOverlay button {
-    margin-top: 48px;
-    background: #ff4c4c;
-    color: #1a1a1a;
+  .modal h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
     font-weight: 700;
-    font-size: 1.3rem;
-    padding: 12px 32px;
+    font-size: 1.5rem;
+    color: #93c5fd;
+    text-align: center;
+  }
+  .ip-list {
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid rgba(147, 197, 253, 0.4);
+    border-radius: 8px;
+    padding: 12px;
+    background: rgba(255 255 255 / 0.06);
+  }
+  .ip-list-item {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(147, 197, 253, 0.2);
+    font-family: monospace;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ip-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .ip-list-item button {
+    background: #ef4444;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    padding: 3px 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .ip-list-item button:hover {
+    background: #b91c1c;
+  }
+
+  /* Close button */
+  .btn-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #38bdf8;
+    font-size: 28px;
+    cursor: pointer;
+    transition: color 0.25s ease;
+  }
+  .btn-close:hover, .btn-close:focus {
+    color: #22d3ee;
+    outline: none;
+  }
+
+  /* Password modal */
+  .password-prompt {
+    background: rgba(255 255 255 / 0.12);
+    backdrop-filter: blur(18px);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 320px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    color: #eef2ff;
+    font-weight: 600;
+    user-select: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .password-prompt label {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #93c5fd;
+  }
+  .password-prompt input[type="password"] {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1rem;
+    font-family: 'Inter', sans-serif;
+  }
+  .password-prompt input[type="password"]:focus {
+    outline: 2px solid #22d3ee;
+    background: rgba(255 255 255 / 0.3);
+  }
+  .password-prompt .error-message {
+    color: #f87171;
+    font-weight: 700;
+    font-size: 0.9rem;
+    min-height: 1.2rem;
+  }
+
+  .password-prompt button {
+    background: linear-gradient(135deg, #4f46e5, #22d3ee);
     border: none;
     border-radius: 24px;
+    padding: 10px 20px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     cursor: pointer;
-    box-shadow: 0 0 15px #ff4c4c;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     user-select: none;
+    transition: transform 0.15s ease, box-shadow 0.3s ease;
   }
-  #jumpScareOverlay button:hover, #jumpScareOverlay button:focus {
-    background: #ff1a1a;
-    box-shadow: 0 0 25px #ff1a1a;
+  .password-prompt button:hover,
+  .password-prompt button:focus {
     outline: none;
     transform: scale(1.05);
+    box-shadow: 0 8px 28px rgba(34,211,238,0.7);
+  }
+
+  /* Tic Tac Toe board */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+    user-select: none;
+  }
+
+  .cell {
+    background: rgba(255 255 255 / 0.15);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(2rem, 7vw, 4rem);
+    cursor: pointer;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+    color: #f0f0f5;
+  }
+  .cell:hover:not(.disabled) {
+    background: rgba(255 255 255 / 0.3);
+  }
+  .cell.disabled {
+    cursor: default;
+    color: #bbb;
+  }
+
+  /* You Win Overlay */
+  .win-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+    z-index: 1500;
+  }
+  .win-overlay.show {
+    display: flex;
+  }
+  .win-message {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #34d399, #22d3ee);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    user-select: none;
+    text-align: center;
+  }
+
+  /* Other games bar */
+  .games-bar {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 420px;
+    user-select: none;
+    margin-top: 12px;
+  }
+  .game-card {
+    background: rgba(255 255 255 / 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    width: 120px;
+    height: 140px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.18);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .game-card:hover, .game-card:focus-visible {
+    outline: none;
+    transform: scale(1.05);
+    box-shadow: 0 0 18px #22d3ee;
+    color: #22d3ee;
+  }
+  .game-icon {
+    font-size: 3.8rem;
+    user-select: none;
+  }
+
+  /* Additional games styling */
+
+  /* Memory game cards */
+  .memory-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+    user-select: none;
+  }
+  .memory-card {
+    background: rgba(255 255 255 / 0.15);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: #fbbf24;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, transform 0.3s ease;
+    user-select: none;
+  }
+  .memory-card.matched {
+    background: #22d3ee;
+    color: #1e293b;
+    cursor: default;
+  }
+  .memory-card.flipped {
+    background: #2563eb;
+    color: white;
+  }
+
+  /* Rock Paper Scissors */
+  .rps-choices {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .rps-btn {
+    background: rgba(255 255 255 / 0.15);
+    border-radius: 50%;
+    width: 96px;
+    height: 96px;
+    font-size: 3rem;
+    color: #fbbf24;
+    cursor: pointer;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+  .rps-btn:hover, .rps-btn:focus-visible {
+    background: #22d3ee;
+    color: #1e293b;
+    outline: none;
+  }
+  .rps-result {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+  }
+
+  /* Guess Number */
+  .guess-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .guess-input {
+    width: 140px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .guess-input:focus {
+    outline: 2px solid #22d3ee;
+  }
+  .guess-btn {
+    background: linear-gradient(135deg, #4f46e5, #22d3ee);
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    user-select: none;
+    transition: transform 0.15s ease, box-shadow 0.3s ease;
+    margin-bottom: 12px;
+  }
+  .guess-btn:hover,
+  .guess-btn:focus {
+    outline: none;
+    transform: scale(1.05);
+    box-shadow: 0 8px 28px rgba(34,211,238,0.7);
+  }
+  .guess-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-height: 1.5rem;
+    user-select: none;
+    text-align: center;
+  }
+
+  /* Media Queries */
+  @media (max-width: 480px) {
+    .app-container {
+      max-width: 90vw;
+      padding: 16px;
+    }
+    .modal {
+      padding: 20px 24px;
+      max-width: 90vw;
+    }
+    .ip-bar {
+      padding: 8px 12px;
+      gap: 8px;
+      right: 8px;
+      bottom: 8px;
+    }
+    .ip-bar span {
+      font-size: 0.9rem;
+    }
   }
 </style>
 </head>
 <body>
-<header><h1>Cybersecurity Awareness</h1></header>
-<main>
-  <section class="info-section">
-    <h2>Welcome to Cybersecurity Awareness</h2>
-    <p>Understand how to protect your data and identity online.</p>
-  </section>
-  <div class="neon-box">
-    <h2>What Is Cybersecurity?</h2>
-    <p>Cybersecurity is the practice of defending digital systems and data from malicious attacks.</p>
-  </div>
-  <button id="freeCoinsBtn">Free Coins by T</button>
-</main>
-<footer><p>&copy; 2023 Cybersecurity Awareness Initiative. All rights reserved.</p></footer>
+  <div class="app-container" role="main" aria-label="Multigame app">
+    <header id="appHeader">Tic Tac Toe</header>
+    <div class="status" aria-live="polite" aria-atomic="true"></div>
 
-<div id="jumpScareOverlay">
-  <div>YOU HAVE BEEN HACKED</div>
-  <small>Be careful</small>
-  <button id="closeJumpscareBtn">Close</button>
-</div>
+    <div id="gameContainer"></div>
+
+    <button class="btn-reset" aria-label="Restart game">Restart Game</button>
+
+    <div class="win-overlay" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="winTitle" aria-describedby="winDesc">
+      <h2 class="win-message" id="winTitle">You Win!</h2>
+      <div class="games-bar" id="otherGamesBar" aria-label="Other games you can play">
+        <!-- Game cards dynamically inserted -->
+      </div>
+    </div>
+  </div>
+
+  <div class="ip-bar" role="button" tabindex="0" aria-label="Enter password to view IP addresses" title="Enter password to view IP addresses">
+    <span class="material-icons" aria-hidden="true">network_wifi</span>
+    <span>IP</span>
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal-overlay password-modal" role="dialog" aria-modal="true" aria-labelledby="passwordModalTitle" tabindex="-1">
+    <div class="password-prompt" role="document">
+      <button class="btn-close" aria-label="Close password prompt">&times;</button>
+      <label for="passwordInput" id="passwordModalTitle">Enter Password</label>
+      <input type="password" id="passwordInput" autocomplete="off" aria-describedby="passwordHelp" />
+      <div id="passwordHelp" class="error-message" aria-live="assertive"></div>
+      <button id="passwordSubmitBtn">Submit</button>
+    </div>
+  </div>
+
+  <!-- IP List Modal -->
+  <div class="modal-overlay ip-list-modal" role="dialog" aria-modal="true" aria-labelledby="ipModalTitle" aria-describedby="ipModalDesc" tabindex="-1">
+    <div class="modal">
+      <button class="btn-close" aria-label="Close IP list">&times;</button>
+      <h2 id="ipModalTitle">Collected IP Addresses</h2>
+      <div id="ipModalDesc" class="ip-list" tabindex="0" aria-live="polite"></div>
+      <button id="clearIPsBtn" style="margin-top:12px; background:#ef4444; border:none; border-radius: 8px; padding:8px 20px; color:#fff; cursor:pointer; font-weight:600; user-select:none;">Delete All IPs</button>
+    </div>
+  </div>
 
 <script>
-  const freeCoinsBtn = document.getElementById("freeCoinsBtn");
-  const jumpScareOverlay = document.getElementById("jumpScareOverlay");
-  const closeBtn = document.getElementById("closeJumpscareBtn");
+  (function(){
+    "use strict";
 
-  freeCoinsBtn.onclick = () => {
-    jumpScareOverlay.classList.add("show");
-  };
+    // Constants
+    const PASSWORD = '2207';
+    const IP_STORAGE_KEY = 'collected_ips';
 
-  closeBtn.onclick = () => {
-    jumpScareOverlay.classList.remove("show");
-  };
+    // DOM elements
+    const appContainer = document.querySelector('.app-container');
+    const headerEl = document.getElementById('appHeader');
+    const statusEl = document.querySelector('.status');
+    const resetBtn = document.querySelector('.btn-reset');
+    const gameContainer = document.getElementById('gameContainer');
+    const winOverlay = document.querySelector('.win-overlay');
+    const otherGamesBar = document.getElementById('otherGamesBar');
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      jumpScareOverlay.classList.remove("show");
+    const ipBar = document.querySelector('.ip-bar');
+
+    const passwordModalOverlay = document.querySelector('.modal-overlay.password-modal');
+    const passwordInput = passwordModalOverlay.querySelector('#passwordInput');
+    const passwordSubmitBtn = passwordModalOverlay.querySelector('#passwordSubmitBtn');
+    const passwordErrorMsg = passwordModalOverlay.querySelector('#passwordHelp');
+    const passwordModalCloseBtn = passwordModalOverlay.querySelector('.btn-close');
+
+    const ipListModalOverlay = document.querySelector('.ip-list-modal');
+    const ipModalCloseBtn = ipListModalOverlay.querySelector('.btn-close');
+    const ipListEl = document.getElementById('ipModalDesc');
+    const clearIPsBtn = document.getElementById('clearIPsBtn');
+
+    // App state
+    let currentGame = 'tictactoe'; // default
+    let gameStates = {}; // To hold data for different games as needed
+
+    // =======================
+    // Initialize all games data structures
+    // =======================
+
+    // Tic Tac Toe State
+    gameStates.tictactoe = {
+      board: Array(9).fill(null),
+      gameActive: true,
+    };
+
+    // Memory Match State
+    gameStates.memory = {
+      cards: [],
+      flippedIndices: [],
+      matchedIndices: [],
+      busy: false,
+    };
+
+    // RPS State
+    gameStates.rps = {
+      playerChoice: null,
+      botChoice: null,
+      result: null,
+    };
+
+    // Guess Number State
+    gameStates.guessnum = {
+      answer: null,
+      attempts: 0,
+    };
+
+    // =======================
+    // Utility Functions
+    // =======================
+    function clearChildren(element) {
+      while (element.firstChild) {
+        element.removeChild(element.firstChild);
+      }
     }
-  });
+
+    // =======================
+    // Tic Tac Toe Implementation
+    // =======================
+    const winningCombos = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+    function ttInitBoard() {
+      clearChildren(gameContainer);
+      const boardEl = document.createElement('div');
+      boardEl.className = 'board';
+      boardEl.setAttribute('role', 'grid');
+      boardEl.setAttribute('aria-label', 'Tic Tac Toe board');
+      boardEl.tabIndex = 0;
+      for(let i=0; i<9; i++){
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.setAttribute('role','gridcell');
+        cell.tabIndex = 0;
+        cell.dataset.index = i;
+        cell.addEventListener('click', ttHandleCellClick);
+        cell.addEventListener('keydown', e => {
+          if(e.key==='Enter' || e.key===' '){
+            e.preventDefault();
+            cell.click();
+          }
+        });
+        boardEl.appendChild(cell);
+      }
+      gameContainer.appendChild(boardEl);
+      updateTtStatus();
+    }
+    function updateTtStatus(text) {
+      if(text){
+        statusEl.textContent = text;
+      } else if(!gameStates.tictactoe.gameActive){
+        if(ttCheckWinner(gameStates.tictactoe.board, 'X')){
+          statusEl.textContent = 'You win! 🎉';
+          showWinOverlay();
+        } else if(ttCheckWinner(gameStates.tictactoe.board, 'O')){
+          statusEl.textContent = 'Bot wins! 🤖';
+        } else {
+          statusEl.textContent = 'Draw! Try again.';
+        }
+      } else {
+        statusEl.textContent = 'Your turn (X)';
+      }
+    }
+    function ttCheckWinner(bd, player){
+      return winningCombos.some(combo => combo.every(i => bd[i] === player));
+    }
+    function ttCheckDraw(bd){
+      return bd.every(c => c !== null);
+    }
+    function ttMakeMove(idx, player){
+      gameStates.tictactoe.board[idx] = player;
+      let boardEl = gameContainer.querySelector('.board');
+      let cell = boardEl.children[idx];
+      cell.textContent = player;
+      cell.classList.add('disabled');
+      cell.style.color = player === 'X' ? '#60a5fa' : '#fbbf24';
+      cell.setAttribute('aria-label', `Cell ${idx+1} marked with ${player}`);
+    }
+    function ttDisableBoard(){
+      for(let el of gameContainer.querySelectorAll('.cell')){
+        el.classList.add('disabled');
+        el.tabIndex = -1;
+        el.style.pointerEvents = 'none';
+      }
+    }
+    function ttEnableBoard(){
+      let bd = gameStates.tictactoe.board;
+      for(let i=0; i<9; i++){
+        let cell = gameContainer.querySelector(`.cell[data-index="${i}"]`);
+        if(bd[i] === null){
+          cell.classList.remove('disabled');
+          cell.tabIndex = 0;
+          cell.style.pointerEvents = 'auto';
+        }
+      }
+    }
+    function ttBotMove(){
+      const bd = gameStates.tictactoe.board;
+      // Try to win
+      for(let i=0; i<bd.length; i++){
+        if(bd[i]===null){
+          bd[i]='O';
+          if(ttCheckWinner(bd, 'O')){
+            bd[i] = null;
+            return i;
+          }
+          bd[i] = null;
+        }
+      }
+      // Block player win
+      for(let i=0; i<bd.length; i++){
+        if(bd[i]===null){
+          bd[i]='X';
+          if(ttCheckWinner(bd, 'X')){
+            bd[i] = null;
+            return i;
+          }
+          bd[i] = null;
+        }
+      }
+      // Center
+      if(bd[4]===null) return 4;
+      // Random
+      let empties = bd.map((v,i)=>v===null?i:null).filter(v=>v!==null);
+      if(empties.length===0) return null;
+      return empties[Math.floor(Math.random()*empties.length)];
+    }
+    async function ttHandleCellClick(e){
+      if(!gameStates.tictactoe.gameActive) return;
+      const idx = Number(e.currentTarget.dataset.index);
+      if(gameStates.tictactoe.board[idx] !== null) return;
+      ttMakeMove(idx, 'X');
+      if(ttCheckWinner(gameStates.tictactoe.board, 'X')){
+        gameStates.tictactoe.gameActive = false;
+        updateTtStatus();
+        ttDisableBoard();
+        return;
+      }
+      if(ttCheckDraw(gameStates.tictactoe.board)){
+        gameStates.tictactoe.gameActive = false;
+        updateTtStatus();
+        ttDisableBoard();
+        return;
+      }
+      updateTtStatus('Bot is thinking...');
+      ttDisableBoard();
+      await new Promise(res => setTimeout(res, 600));
+      const bIdx = ttBotMove();
+      if(bIdx !== null){
+        ttMakeMove(bIdx, 'O');
+        if(ttCheckWinner(gameStates.tictactoe.board, 'O')){
+          gameStates.tictactoe.gameActive = false;
+          updateTtStatus();
+          ttDisableBoard();
+          return;
+        }
+        if(ttCheckDraw(gameStates.tictactoe.board)){
+          gameStates.tictactoe.gameActive = false;
+          updateTtStatus();
+          ttDisableBoard();
+          return;
+        }
+      }
+      gameStates.tictactoe.gameActive = true;
+      updateTtStatus();
+      ttEnableBoard();
+    }
+    function ttResetGame(){
+      gameStates.tictactoe.board = Array(9).fill(null);
+      gameStates.tictactoe.gameActive = true;
+      initGameUI('tictactoe');
+    }
+
+    // =======================
+    // Memory Match Implementation (Simple Emojis)
+    // =======================
+    const MEMORY_EMOJIS = ['🐱','🐶','🐭','🐹','🦊','🐻','🐼','🐨'];
+    function memoryShuffle(array){
+      let a = array.slice();
+      for(let i=a.length-1; i>0; i--){
+        let j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+    function memoryInitGame(){
+      clearChildren(gameContainer);
+      statusEl.textContent = 'Find matching pairs!';
+      let cardsArr = MEMORY_EMOJIS.concat(MEMORY_EMOJIS);
+      cardsArr = memoryShuffle(cardsArr);
+      gameStates.memory.cards = cardsArr;
+      gameStates.memory.flippedIndices = [];
+      gameStates.memory.matchedIndices = [];
+      gameStates.memory.busy = false;
+
+      const boardEl = document.createElement('div');
+      boardEl.className = 'memory-board';
+      boardEl.setAttribute('aria-label','Memory matching game board');
+      boardEl.tabIndex = 0;
+
+      cardsArr.forEach((emoji, i) => {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.dataset.index = i;
+        card.setAttribute('role','button');
+        card.setAttribute('aria-pressed', 'false');
+        card.tabIndex = 0;
+        card.textContent = '';
+        card.addEventListener('click', memoryHandleCardClick);
+        card.addEventListener('keydown', e=>{
+          if(e.key==='Enter' || e.key===' '){
+            e.preventDefault();
+            card.click();
+          }
+        });
+        boardEl.appendChild(card);
+      });
+      gameContainer.appendChild(boardEl);
+    }
+    function memoryUpdateBoard(){
+      const boardEl = gameContainer.querySelector('.memory-board');
+      if(!boardEl) return;
+      gameStates.memory.cards.forEach((emoji, i)=>{
+        const card = boardEl.children[i];
+        if(gameStates.memory.matchedIndices.includes(i)){
+          card.classList.add('matched');
+          card.textContent = emoji;
+          card.setAttribute('aria-pressed', 'true');
+          card.style.cursor = 'default';
+        } else if(gameStates.memory.flippedIndices.includes(i)){
+          card.classList.add('flipped');
+          card.textContent = emoji;
+          card.setAttribute('aria-pressed', 'true');
+        } else {
+          card.classList.remove('flipped');
+          card.textContent = '';
+          card.setAttribute('aria-pressed', 'false');
+          card.style.cursor = 'pointer';
+        }
+      });
+    }
+    function memoryHandleCardClick(e){
+      if(gameStates.memory.busy) return;
+      const idx = Number(e.currentTarget.dataset.index);
+      if(gameStates.memory.flippedIndices.includes(idx) || gameStates.memory.matchedIndices.includes(idx)) return;
+      if(gameStates.memory.flippedIndices.length >= 2) return;
+
+      gameStates.memory.flippedIndices.push(idx);
+      memoryUpdateBoard();
+
+      if(gameStates.memory.flippedIndices.length === 2){
+        let [a,b] = gameStates.memory.flippedIndices;
+        if(gameStates.memory.cards[a] === gameStates.memory.cards[b]){
+          gameStates.memory.matchedIndices.push(a,b);
+          gameStates.memory.flippedIndices = [];
+          memoryUpdateBoard();
+          if(gameStates.memory.matchedIndices.length === gameStates.memory.cards.length){
+            statusEl.textContent = 'You won the Memory game! 🎉';
+            showWinOverlay();
+          } else {
+            statusEl.textContent = 'Match found! Keep going.';
+          }
+        } else {
+          gameStates.memory.busy = true;
+          statusEl.textContent = 'No match. Try again.';
+          setTimeout(()=>{
+            gameStates.memory.flippedIndices = [];
+            memoryUpdateBoard();
+            gameStates.memory.busy = false;
+            statusEl.textContent = 'Find matching pairs!';
+          }, 1200);
+        }
+      }
+    }
+    function memoryResetGame(){
+      memoryInitGame();
+    }
+
+    // =======================
+    // Rock Paper Scissors Implementation
+    // =======================
+    const RPS_CHOICES = ['rock','paper','scissors'];
+    const RPS_EMOJIS = {rock:'✊', paper:'✋', scissors:'✌️'};
+    function rpsInitGame(){
+      clearChildren(gameContainer);
+      statusEl.textContent = 'Choose Rock, Paper, or Scissors';
+
+      const choicesDiv = document.createElement('div');
+      choicesDiv.className = 'rps-choices';
+
+      RPS_CHOICES.forEach(choice=>{
+        const btn = document.createElement('button');
+        btn.className = 'rps-btn';
+        btn.title = choice;
+        btn.type = 'button';
+        btn.setAttribute('aria-label', choice);
+        btn.textContent = RPS_EMOJIS[choice];
+        btn.addEventListener('click', ()=> rpsHandleChoice(choice));
+        choicesDiv.appendChild(btn);
+      });
+      gameContainer.appendChild(choicesDiv);
+
+      const resultDiv = document.createElement('div');
+      resultDiv.className = 'rps-result';
+      resultDiv.setAttribute('aria-live', 'polite');
+      gameContainer.appendChild(resultDiv);
+
+      gameStates.rps.result = null;
+      gameStates.rps.playerChoice = null;
+      gameStates.rps.botChoice = null;
+    }
+    function rpsHandleChoice(playerChoice){
+      let botChoice = RPS_CHOICES[Math.floor(Math.random()*3)];
+      gameStates.rps.playerChoice = playerChoice;
+      gameStates.rps.botChoice = botChoice;
+      let result;
+      if(playerChoice === botChoice){
+        result = 'Draw!';
+      } else if(
+        (playerChoice==='rock' && botChoice==='scissors') ||
+        (playerChoice==='paper' && botChoice==='rock') ||
+        (playerChoice==='scissors' && botChoice==='paper')
+      ){
+        result = 'You win! 🎉';
+        showWinOverlay();
+      } else {
+        result = 'You lose!';
+      }
+      gameStates.rps.result = result;
+      let resultDiv = gameContainer.querySelector('.rps-result');
+      resultDiv.textContent = `You: ${RPS_EMOJIS[playerChoice]} - Bot: ${RPS_EMOJIS[botChoice]} — ${result}`;
+      statusEl.textContent = result;
+    }
+    function rpsResetGame(){
+      rpsInitGame();
+      statusEl.textContent = 'Choose Rock, Paper, or Scissors';
+    }
+
+    // =======================
+    // Guess Number Implementation (1-100)
+    // =======================
+    function guessnumInitGame(){
+      clearChildren(gameContainer);
+      statusEl.textContent = 'Guess a number between 1 and 100';
+
+      const container = document.createElement('div');
+      container.className = 'guess-container';
+
+      const input = document.createElement('input');
+      input.className = 'guess-input';
+      input.type = 'number';
+      input.min = 1;
+      input.max = 100;
+      input.setAttribute('aria-label', 'Your guess');
+      container.appendChild(input);
+
+      const button = document.createElement('button');
+      button.className = 'guess-btn';
+      button.textContent = 'Guess';
+      container.appendChild(button);
+
+      const msg = document.createElement('div');
+      msg.className = 'guess-message';
+      container.appendChild(msg);
+
+      gameContainer.appendChild(container);
+
+      gameStates.guessnum.answer = Math.floor(Math.random()*100)+1;
+      gameStates.guessnum.attempts = 0;
+
+      button.addEventListener('click', () => {
+        let val = parseInt(input.value);
+        if(isNaN(val) || val < 1 || val > 100){
+          msg.textContent = 'Enter a number between 1 and 100';
+          return;
+        }
+        gameStates.guessnum.attempts++;
+        if(val === gameStates.guessnum.answer){
+          msg.textContent = `Correct! You guessed the number in ${gameStates.guessnum.attempts} tries.`;
+          statusEl.textContent = 'You win! 🎉';
+          showWinOverlay();
+        } else if(val < gameStates.guessnum.answer){
+          msg.textContent = 'Too low! Try again.';
+        } else {
+          msg.textContent = 'Too high! Try again.';
+        }
+      });
+      input.addEventListener('keydown', e => {
+        if(e.key === 'Enter') button.click();
+      });
+    }
+    function guessnumResetGame(){
+      guessnumInitGame();
+      statusEl.textContent = 'Guess a number between 1 and 100';
+    }
+
+    // =======================
+    // Show Win Overlay
+    // =======================
+    function showWinOverlay(){
+      winOverlay.classList.add('show');
+      winOverlay.focus();
+    }
+    function hideWinOverlay(){
+      winOverlay.classList.remove('show');
+    }
+
+    // =======================
+    // Render Game by name
+    // =======================
+    function initGameUI(gameName){
+      hideWinOverlay();
+      resetBtn.disabled = false;
+      statusEl.textContent = '';
+      switch(gameName){
+        case 'tictactoe':
+          headerEl.textContent = 'Tic Tac Toe';
+          ttInitBoard();
+          break;
+        case 'memory':
+          headerEl.textContent = 'Memory Match';
+          memoryInitGame();
+          break;
+        case 'rps':
+          headerEl.textContent = 'Rock Paper Scissors';
+          rpsInitGame();
+          break;
+        case 'guessnum':
+          headerEl.textContent = 'Guess the Number';
+          guessnumInitGame();
+          break;
+        default:
+          headerEl.textContent = 'Tic Tac Toe';
+          ttInitBoard();
+          break;
+      }
+      currentGame = gameName;
+    }
+
+    // =======================
+    // Reset Current Game
+    // =======================
+    function resetCurrentGame(){
+      switch(currentGame){
+        case 'tictactoe': ttResetGame(); break;
+        case 'memory': memoryResetGame(); break;
+        case 'rps': rpsResetGame(); break;
+        case 'guessnum': guessnumResetGame(); break;
+      }
+    }
+
+    // =======================
+    // Other Games Bar Setup
+    // =======================
+    const otherGames = [
+      { id: 'memory', name: 'Memory Match', icon: 'memory' },
+      { id: 'rps', name: 'Rock Paper Scissors', icon: 'content_cut' },
+      { id: 'guessnum', name: 'Guess Number', icon: 'help_outline' },
+    ];
+    function populateOtherGamesBar(){
+      clearChildren(otherGamesBar);
+      for(const game of otherGames){
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.tabIndex = 0;
+        card.setAttribute('role','button');
+        card.setAttribute('aria-label', `Play ${game.name}`);
+        card.addEventListener('click', () => {
+          hideWinOverlay();
+          initGameUI(game.id);
+        });
+        card.addEventListener('keydown', e=>{
+          if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            hideWinOverlay();
+            initGameUI(game.id);
+          }
+        });
+        const icon = document.createElement('span');
+        icon.className = 'material-icons game-icon';
+        icon.textContent = game.icon;
+        card.appendChild(icon);
+        const label = document.createElement('span');
+        label.textContent = game.name;
+        card.appendChild(label);
+        otherGamesBar.appendChild(card);
+      }
+    }
+
+    // =======================
+    // IP Storage and Modal Logic
+    // =======================
+    function fetchAndStoreIP(){
+      fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => {
+          let storedIPs = JSON.parse(localStorage.getItem(IP_STORAGE_KEY)) || [];
+          if(data.ip && !storedIPs.includes(data.ip)){
+            storedIPs.push(data.ip);
+            localStorage.setItem(IP_STORAGE_KEY, JSON.stringify(storedIPs));
+          }
+        }).catch(() => {});
+    }
+
+    function showIPListModal(){
+      clearChildren(ipListEl);
+      let storedIPs = JSON.parse(localStorage.getItem(IP_STORAGE_KEY)) || [];
+      if(storedIPs.length === 0){
+        ipListEl.textContent = 'No IP addresses collected yet.';
+      } else {
+        storedIPs.forEach(ip=>{
+          const div = document.createElement('div');
+          div.className = 'ip-list-item';
+          div.textContent = ip;
+          // Add delete button
+          const delBtn = document.createElement('button');
+          delBtn.textContent = 'Delete';
+          delBtn.type = 'button';
+          delBtn.title = `Delete IP ${ip}`;
+          delBtn.addEventListener('click', () => {
+            deleteIP(ip);
+          });
+          div.appendChild(delBtn);
+          ipListEl.appendChild(div);
+        });
+      }
+      ipListModalOverlay.classList.add('show');
+      ipListModalOverlay.focus();
+    }
+    function hideIPListModal(){
+      ipListModalOverlay.classList.remove('show');
+      ipBar.focus();
+    }
+    function deleteIP(ip){
+      let storedIPs = JSON.parse(localStorage.getItem(IP_STORAGE_KEY)) || [];
+      storedIPs = storedIPs.filter(i => i !== ip);
+      localStorage.setItem(IP_STORAGE_KEY, JSON.stringify(storedIPs));
+      showIPListModal();
+    }
+    function clearAllIPs(){
+      if(confirm('Are you sure you want to delete all collected IP addresses?')){
+        localStorage.removeItem(IP_STORAGE_KEY);
+        showIPListModal();
+      }
+    }
+
+    // =======================
+    // Password Modal Logic
+    // =======================
+    function showPasswordModal(){
+      passwordModalOverlay.classList.add('show');
+      passwordErrorMsg.textContent = '';
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+
+    function hidePasswordModal(){
+      passwordModalOverlay.classList.remove('show');
+      ipBar.focus();
+    }
+
+    function validatePasswordSubmit(){
+      let val = passwordInput.value.trim();
+      if(val === PASSWORD){
+        hidePasswordModal();
+        showIPListModal();
+      } else {
+        passwordErrorMsg.textContent = 'Incorrect password';
+        passwordInput.focus();
+      }
+    }
+
+    // =======================
+    // Event Listeners Setup
+    // =======================
+    resetBtn.addEventListener('click', resetCurrentGame);
+
+    ipBar.addEventListener('click', showPasswordModal);
+    ipBar.addEventListener('keydown', e=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        showPasswordModal();
+      }
+    });
+
+    passwordModalCloseBtn.addEventListener('click', hidePasswordModal);
+    passwordSubmitBtn.addEventListener('click', validatePasswordSubmit);
+    passwordInput.addEventListener('keydown', e=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        validatePasswordSubmit();
+      } else if(e.key === 'Escape'){
+        hidePasswordModal();
+      }
+    });
+    passwordModalOverlay.addEventListener('click', e=>{
+      if(e.target === passwordModalOverlay) hidePasswordModal();
+    });
+
+    ipModalCloseBtn.addEventListener('click', hideIPListModal);
+    clearIPsBtn.addEventListener('click', clearAllIPs);
+    ipListModalOverlay.addEventListener('click', e=>{
+      if(e.target === ipListModalOverlay) hideIPListModal();
+    });
+
+    window.addEventListener('keydown', e=>{
+      if(e.key === 'Escape'){
+        if(passwordModalOverlay.classList.contains('show')){
+          hidePasswordModal();
+        } else if(ipListModalOverlay.classList.contains('show')){
+          hideIPListModal();
+        } else if(winOverlay.classList.contains('show')){
+          hideWinOverlay();
+        }
+      }
+    });
+
+    // Setup 'You Win' overlay other games bar
+    populateOtherGamesBar();
+
+    // =======================
+    // Initialize default game
+    // =======================
+    function init(){
+      fetchAndStoreIP();
+      initGameUI('tictactoe');
+    }
+    init();
+
+  })();
 </script>
+
 </body>
 </html>
+
